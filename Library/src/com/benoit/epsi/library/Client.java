@@ -4,10 +4,15 @@ public class Client {
 	
 	private String username;
 	
+	/**
+	 * Constructeur
+	 * @param unUsername
+	 */
 	public Client(String unUsername){
 		this.username=unUsername;
 	}
 
+	//Getter et setter
 	public String getUsername() {
 		return username;
 	}

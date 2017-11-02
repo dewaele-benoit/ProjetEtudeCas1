@@ -7,13 +7,22 @@ public class Book {
 	private String title;
 	private String ISBN;
 	
+	/**
+	 * Constructeur
+	 * @param unId
+	 * @param unAuthor
+	 * @param unTitle
+	 * @param unISBN
+	 */
 	public Book (String unId, String unAuthor, String unTitle, String unISBN){
 		this.id=unId;
 		this.author=unAuthor;
 		this.title=unTitle;
 		this.ISBN=unISBN;
 	}
-
+	
+	
+	//Getter et setter
 	public String getId() {
 		return id;
 	}
