@@ -14,7 +14,13 @@ public class Library {
 	* @return a book with the given id if there is one
 	*/
 	public Book getBook (String id){
-		return null;
+		Book leBook = null;
+		for (Book unBook : lesBooks){
+			if (unBook.getId().equals(id)){
+				leBook = unBook;
+			}
+		}
+		return leBook;
 	}
 	
 	/**
