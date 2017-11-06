@@ -1,8 +1,11 @@
 package com.benoit.epsi.library;
 
+import java.util.ArrayList;
+
 public class Client {
 	
 	private String username;
+	private ArrayList<Book> myBooks = new ArrayList<Book>();
 	
 	/**
 	 * Constructeur
@@ -11,7 +14,15 @@ public class Client {
 	public Client(String unUsername){
 		this.username=unUsername;
 	}
-
+	
+	public void borrowMyBook(Book myBook){
+		this.myBooks.add(myBook);
+	}
+	
+	public void returnMyBook(Book myBook){
+		this.myBooks.remove(myBook);
+	}
+	
 	//Getter et setter
 	public String getUsername() {
 		return username;
@@ -20,7 +31,13 @@ public class Client {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	
+
+	public ArrayList<Book> getMyBooks() {
+		return myBooks;
+	}
+
+	public void setMyBooks(ArrayList<Book> myBooks) {
+		this.myBooks = myBooks;
+	}
 	
 }

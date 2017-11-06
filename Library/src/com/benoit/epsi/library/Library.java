@@ -48,6 +48,16 @@ public class Library {
 		return id;
 	}
 	
+	public Client getClient(String username){
+		Client theClient=null;
+		for (Client unClient : lesClients){
+			if(unClient.getUsername().equals(username)){
+				theClient = unClient;
+			}
+		}
+		return theClient;
+	}
+	
 	/**
 	* Borrow a book from the library
 	*
@@ -58,7 +68,16 @@ public class Library {
 	*/
 	
 	public void borrowBook(String id, String username) throws BookNotFoundException, UnavailableBookException{
-		
+		Book theBook = this.getBook(id);
+		if(theBook == null){
+			throw new BookNotFoundException();
+		}
+		if (theBook.getStatus()==Status.FREE){
+			theBook.setStatus(Status.BORROWED);
+			this.getClient(username).borrowMyBook(theBook);
+		}else{
+			throw new UnavailableBookException();
+		}
 	}
 	
 	/**
@@ -71,7 +90,16 @@ public class Library {
 	already returned
 	*/
 	public void returnBook(String id, String username) throws BookNotFoundException, AllBooksAlreadyReturnedException{
-		
+		Book theBook = this.getBook(id);
+		if(theBook == null){
+			throw new BookNotFoundException();
+		}
+		if (theBook.getStatus()==Status.BORROWED){
+			theBook.setStatus(Status.FREE);
+			this.getClient(username).returnMyBook(theBook);
+		}else{
+			throw new AllBooksAlreadyReturnedException();
+		}
 	}
 	
 	/**

@@ -6,6 +6,7 @@ public class Book {
 	private String author;
 	private String title;
 	private String ISBN;
+	private Status status;
 	
 	/**
 	 * Constructeur
@@ -14,15 +15,17 @@ public class Book {
 	 * @param unTitle
 	 * @param unISBN
 	 */
-	public Book (String unId, String unAuthor, String unTitle, String unISBN){
+	public Book (String unId, String unAuthor, String unTitle, String unISBN, Status status){
 		this.id=unId;
 		this.author=unAuthor;
 		this.title=unTitle;
 		this.ISBN=unISBN;
+		this.status=Status.FREE;
 	}
-	
+
 	public Book (String ISBN){
 		this.ISBN=ISBN;
+		this.status=Status.FREE;
 	}
 	
 	
@@ -59,5 +62,12 @@ public class Book {
 		ISBN = iSBN;
 	}
 	
+	public Status getStatus() {
+		return status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
 	
 }
