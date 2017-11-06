@@ -6,7 +6,7 @@ public interface LibraryInterface {
 	
 	public String addBook(String isbn);
 	
-	public void borrowBook(String id, String username) throws BookNotFoundExecption, UnavaibleBookException;
+	public void borrowBook(String id, String username) throws BookNotFoundException, UnavailableBookException;
 	
 	public void returnBook(String id, String username) throws BookNotFoundException, AllBooksAlreadyReturnedException;
 	
