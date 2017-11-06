@@ -21,6 +21,10 @@ public class Book {
 		this.ISBN=unISBN;
 	}
 	
+	public Book (String ISBN){
+		this.ISBN=ISBN;
+	}
+	
 	
 	//Getter et setter
 	public String getId() {

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Library {
 	//Liste des livres
 	private ArrayList<Book> lesBooks = new ArrayList<Book>();
+	private ArrayList<Client> lesClients = new ArrayList<Client>();
 	
 	/**
 	* Get a book from its id
@@ -15,7 +16,9 @@ public class Library {
 	*/
 	public Book getBook (String id){
 		Book leBook = null;
+		//Parcour de la liste de livres 
 		for (Book unBook : lesBooks){
+			//Si le l'id existe on retourne le livre
 			if (unBook.getId().equals(id)){
 				leBook = unBook;
 			}
@@ -30,7 +33,19 @@ public class Library {
 	* @return the id of the added book if the isbn exists
 	*/
 	public String addBook (String ISBN){
-		return null;
+		String id = null;
+		//Parcour de la liste des livres
+		for (Book unBook : lesBooks){
+			//Si le code ISBN existe id prend la valeur de l'id du livre
+			if (unBook.getISBN().equals(ISBN)){
+				id = unBook.getId(); 
+			}
+		}
+		//Si l'id reste null alors on ajoute le livre avec le code ISBN
+		if (id == null){
+			Book newBook = new  Book (ISBN);
+		}
+		return id;
 	}
 	
 	/**
@@ -39,9 +54,9 @@ public class Library {
 	* @param id the id of the borrowed book
 	* @param username the name of the user
 	* @throws BookNotFoundException if no book in the library has the given id
-	* @throws UnavailableBookException if all books in the library with the given id
-	have been borrowed
+	* @throws UnavailableBookException if all books in the library with the given id have been borrowed
 	*/
+	
 	public void borrowBook(String id, String username) throws BookNotFoundException, UnavailableBookException{
 		
 	}
@@ -65,7 +80,7 @@ public class Library {
 	* @return the books
 	*/
 	public ArrayList<Book> getBooks(){
-		return null;
+		return lesBooks;
 	}
 	
 	/**
@@ -75,7 +90,15 @@ public class Library {
 	* @return the books matching the search term
 	*/
 	public ArrayList<Book> searchBooks(String searchTerm){
-		return null;
+		ArrayList<Book> booksMatch = new ArrayList<Book>();
+		for (Book unBook : lesBooks){
+			//Si ca match avec le titre, l'auteur ou L'ISBN alors on l'ajoute à la liste
+			if (unBook.getISBN().equals(searchTerm) || unBook.getTitle().equals(searchTerm) || unBook.getAuthor().equals(searchTerm)){
+				booksMatch.add(unBook); 
+			}
+		}
+		
+		return booksMatch;
 	}
 }
 	
