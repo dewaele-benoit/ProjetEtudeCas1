@@ -47,8 +47,7 @@ public class Library {
 	/**
 	 * Add a book with the given ISBN
 	 *
-	 * @param isbn
-	 *            the ISBN
+	 * @param isbn the ISBN
 	 * @return the id of the added book if the isbn exists
 	 */
 	public String addBook(String ISBN) {
@@ -56,14 +55,14 @@ public class Library {
 		if(ValidateISBN.validateIsbn13(ISBN) || ValidateISBN.validateIsbn10(ISBN)){
 			// Parcour de la liste des livres
 			for (Book unBook : lesBooks) {
-				// Si le code ISBN existe id prend la valeur de l'id du livre
+				// Si le code ISBN existe 
 				if (unBook.getISBN().equals(ISBN)) {
-					id = unBook.getId();
+					System.out.println("Le livre existe déjà.");
 				}
-			}
-			// Si l'id reste null alors on ajoute le livre avec le code ISBN
-			if (id == null) {
-				Book newBook = new Book(ISBN);
+				else{
+					Book newBook = new Book(ISBN);
+					System.out.println(newBook.getId());
+				}
 			}
 		}
 		return id;
