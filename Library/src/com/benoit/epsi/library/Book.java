@@ -6,7 +6,7 @@ public class Book {
 	private String author;
 	private String title;
 	private String ISBN;
-	private Status status;
+	private int quantity;
 
 	/**
 	 * Constructeur
@@ -16,21 +16,12 @@ public class Book {
 	 * @param unTitle
 	 * @param unISBN
 	 */
-	public Book(String unId, String unAuthor, String unTitle, String unISBN, Status status) {
-		if (ValidateISBN.validateIsbn13(ISBN) || ValidateISBN.validateIsbn10(ISBN)) {
-			this.id = unId;
-			this.author = unAuthor;
-			this.title = unTitle;
-			this.ISBN = unISBN;
-			this.status = Status.FREE;
-		}
-	}
-
-	public Book(String ISBN) {
-		if (ValidateISBN.validateIsbn13(ISBN) || ValidateISBN.validateIsbn10(ISBN)) {
-			this.ISBN = ISBN;
-			this.status = Status.FREE;
-		}
+	public Book(String unId, String unAuthor, String unTitle, String unISBN, int quantity) {
+		this.id = unId;
+		this.author = unAuthor;
+		this.title = unTitle;
+		this.ISBN = unISBN;
+		this.quantity = quantity;
 	}
 
 	// Getter et setter
@@ -63,17 +54,18 @@ public class Book {
 	}
 
 	public void setISBN(String iSBN) {
-		if (ValidateISBN.validateIsbn13(ISBN) || ValidateISBN.validateIsbn10(ISBN)) {
-			ISBN = iSBN;
-		}
+		ISBN = iSBN;
 	}
 
-	public Status getStatus() {
-		return status;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setStatus(Status status) {
-		this.status = status;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
+
+
+	
 }

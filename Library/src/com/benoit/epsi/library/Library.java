@@ -2,29 +2,14 @@ package com.benoit.epsi.library;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class Library {
 	// Liste des livres
-	private ArrayList<Book> lesBooks = new ArrayList<Book>();
-	private ArrayList<Client> lesClients = new ArrayList<Client>();
-
-	// Getter et setter
-	public ArrayList<Book> getLesBooks() {
-		return lesBooks;
-	}
-
-	public void setLesBooks(ArrayList<Book> lesBooks) {
-		this.lesBooks = lesBooks;
-	}
-
-	public ArrayList<Client> getLesClients() {
-		return lesClients;
-	}
-
-	public void setLesClients(ArrayList<Client> lesClients) {
-		this.lesClients = lesClients;
-	}
-
+	private List<Book> lesBooks = new ArrayList<Book>();
+	private List<Client> lesClients = new ArrayList<Client>();
+	
 	/**
 	 * Get a book from its id
 	 *
@@ -32,56 +17,26 @@ public class Library {
 	 *            the id of the wanter book
 	 * @return a book with the given id if there is one
 	 */
-	public Book getBook(String id) {
-		Book leBook = null;
-		// Parcour de la liste de livres
-		for (Book unBook : lesBooks) {
-			// Si le l'id existe on retourne le livre
-			if (unBook.getId().equals(id)) {
-				leBook = unBook;
-			}
-		}
-		return leBook;
+	public Optional<Book> getBook(String id) {
+		return Optional.ofNullable(searchBooks(id).get(0));
 	}
 
 	/**
 	 * Add a book with the given ISBN
-	 *
+	 *String unId, String unAuthor, String unTitle, String unISBN, int quantity
 	 * @param isbn the ISBN
 	 * @return the id of the added book if the isbn exists
 	 */
-	public String addBook(String ISBN) {
-		String id = null;
+	public Optional<String> addBook(String ISBN, String id, String title, String author, int quantity) {
 		if(ValidateISBN.validateIsbn13(ISBN) || ValidateISBN.validateIsbn10(ISBN)){
-			// Parcour de la liste des livres
-			for (Book unBook : lesBooks) {
-				// Si le code ISBN existe 
-				if (unBook.getISBN().equals(ISBN)) {
-					System.out.println("Le livre existe déjà.");
-				}
-				else{
-					Book newBook = new Book(ISBN);
-					System.out.println(newBook.getId());
-				}
+			if (searchBooks(id).isEmpty() || searchBooks(ISBN).isEmpty()){
+				lesBooks.add(new Book(id, author, title, ISBN, quantity));
+			}
+			else{
+				searchBooks(id).get(0).setQuantity(searchBooks(id).get(0).getQuantity()+1);
 			}
 		}
-		return id;
-	}
-
-	/**
-	 * Return the client with this username
-	 * 
-	 * @param username
-	 * @return client
-	 */
-	public Client getClient(String username) {
-		Client theClient = null;
-		for (Client unClient : lesClients) {
-			if (unClient.getUsername().equals(username)) {
-				theClient = unClient;
-			}
-		}
-		return theClient;
+		return Optional.ofNullable(searchBooks(id).get(0).getId());
 	}
 
 	/**
@@ -94,25 +49,23 @@ public class Library {
 	 * @throws LibraryException
 	 *             if the book cannot be returned
 	 */
-
 	public void borrowBook(String id, String username) throws LibraryException {
-		Book theBook = this.getBook(id);
-		if (theBook == null) {
-			throw new LibraryException();
-		}
-		// si le livre est disponible
-		if (theBook.getStatus() == Status.FREE) {
-			// Parcour pour chaque livre du client s'il ne l'a pas déjà
-			for (Book book : this.getClient(username).getMyBooks()) {
-				if (book.getId().equals(id)) {
-					System.out.println("Vous avez déjà ce livre en votre possession");
-				} else {
-					theBook.setStatus(Status.BORROWED);
-					this.getClient(username).borrowMyBook(theBook);
+		for (Client c : lesClients){
+			if (c.getUsername().equals(username)){
+				if(searchBooks(id).isEmpty()){
+					throw new LibraryException();
+				}
+				else{
+					Book borrowBook = searchBooks(id).get(0);
+					if(borrowBook.getQuantity()>0 && !c.getMyBooks().contains(borrowBook)){
+						c.getMyBooks().add(borrowBook);
+						borrowBook.setQuantity(borrowBook.getQuantity()-1);
+					}
+					else{
+						throw new LibraryException();
+					}
 				}
 			}
-		} else {
-			throw new LibraryException();
 		}
 	}
 
@@ -127,15 +80,21 @@ public class Library {
 	 *             if the book cannot be returned
 	 */
 	public void returnBook(String id, String username) throws LibraryException {
-		Book theBook = this.getBook(id);
-		if (theBook == null) {
-			throw new LibraryException();
-		}
-		if (theBook.getStatus() == Status.BORROWED) {
-			theBook.setStatus(Status.FREE);
-			this.getClient(username).returnMyBook(theBook);
-		} else {
-			throw new LibraryException();
+		for (Client c : lesClients){
+			if (c.getUsername().equals(username)){
+				if (c.getMyBooks().isEmpty()){
+					throw new LibraryException();
+				}
+				else{
+					for (Book b : c.getMyBooks()){
+						if (b.getId().equals(id)){
+							b.setQuantity(b.getQuantity()+1);
+							c.getMyBooks().remove(b);
+							break;
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -144,7 +103,7 @@ public class Library {
 	 *
 	 * @return the books
 	 */
-	public ArrayList<Book> getBooks() {
+	public List<Book> getBooks() {
 		return lesBooks;
 	}
 
@@ -156,13 +115,13 @@ public class Library {
 	 *            the searched term
 	 * @return the books matching the search term
 	 */
-	public ArrayList<Book> searchBooks(String searchTerm) {
-		ArrayList<Book> booksMatch = new ArrayList<Book>();
+	public List<Book> searchBooks(String searchTerm) {
+		List<Book> booksMatch = new ArrayList<Book>();
 		for (Book unBook : lesBooks) {
 			// Si ca match avec le titre, l'auteur ou L'ISBN alors on l'ajoute à
 			// la liste
 			if (unBook.getISBN().equals(searchTerm) || unBook.getTitle().equals(searchTerm)
-					|| unBook.getAuthor().equals(searchTerm)) {
+					|| unBook.getAuthor().equals(searchTerm) || unBook.getId().equals(searchTerm)) {
 				booksMatch.add(unBook);
 			}
 		}
@@ -170,5 +129,8 @@ public class Library {
 		return booksMatch;
 	}
 
+	public void addClient(String username, String id, String role, String email, String address){
+		lesClients.add(new Client( username,  id,  role,  email,  address));
+	}
 	
 }
