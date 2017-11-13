@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Library {
+public class Library implements LibraryInterface{
 	// Liste des livres
 	private List<Book> lesBooks = new ArrayList<Book>();
 	private List<Client> lesClients = new ArrayList<Client>();

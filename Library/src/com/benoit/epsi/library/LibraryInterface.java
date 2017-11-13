@@ -18,7 +18,7 @@ public interface LibraryInterface {
 	* @param isbn the ISBN
 	* @return the id of the added book if the isbn exists
 	*/
-	Optional<String> addBook(String isbn) throws LibraryException;
+	Optional<String> addBook(String ISBN, String id, String title, String author, int quantity);
 	/**
 	* Borrow a book from the library
 	*
