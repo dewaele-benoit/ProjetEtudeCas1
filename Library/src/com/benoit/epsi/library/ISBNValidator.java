@@ -1,6 +1,6 @@
 package com.benoit.epsi.library;
 
-public class ValidateISBN {
+public class ISBNValidator {
 	public static boolean validateIsbn10(String isbn) {
 		if (isbn == null) {
 			return false;
@@ -20,7 +20,7 @@ public class ValidateISBN {
 				sum += ((10 - i) * digit);
 			}
 
-			/**
+			/*
 			 * Divide the sum by 11 and find out what is the remainder. If the
 			 * remainder is zero, then it is a valid 10 digit ISBN. If the
 			 * remainder is not zero, then it is not a valid 10 digit ISBN.
@@ -55,7 +55,7 @@ public class ValidateISBN {
 				int digit = Integer.parseInt(isbn.substring(i, i + 1));
 				sum += (i % 2 == 0) ? digit * 1 : digit * 3;
 			}
-			/**
+			/*
 			 * Divide the sum by 10 and find out what is the remainder. If the
 			 * remainder is zero, then it is a valid 13 digit ISBN. If the
 			 * remainder is not zero, then it is not a valid 13 digit ISBN.
