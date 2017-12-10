@@ -1,4 +1,4 @@
-package com.benoit.epsi.library;
+package com.epsi.library;
 
 public class LibraryException extends Exception {
 	public LibraryException() {

@@ -1,4 +1,4 @@
-package com.benoit.epsi.library;
+package com.epsi.library;
 
 public class ISBNValidator {
 	public static boolean validateIsbn10(String isbn) {

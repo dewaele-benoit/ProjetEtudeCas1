@@ -1,4 +1,4 @@
-package com.benoit.epsi.library;
+package com.epsi.library;
 
 import java.util.ArrayList;
 import java.util.List;
